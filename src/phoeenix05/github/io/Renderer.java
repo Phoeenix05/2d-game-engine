@@ -154,17 +154,31 @@ public class Renderer {
     }
   }
 
-  public void drawLine(int x0, int y0, int x1, int y1) {
-    if (Math.abs(y1 - y0) < Math.abs(x1 - x0)) {
-      if (x0 > x1) drawLineLow(x1, y1, x0, y0);
-      else drawLineLow(x0, y0, x1, y1);
-    } else {
-      if (y0 > y1) drawLineHigh(x1, y1, x0, y0);
-      else drawLineHigh(x0, y0, x1, y1);
+  public void drawCircle(int offX, int offY, int r, int color) {
+    double angle, x1, y1;
+
+    for (double i = 0; i < 360; i++) {
+      angle = i;
+      x1 = r * Math.cos(angle * Math.PI / 180);
+      y1 = r * Math.sin(angle * Math.PI / 180);
+
+      int ElX = (int) Math.round(offX + x1);
+      int ElY = (int) Math.round(offY + y1);
+      setPixel(ElX, ElY, color);
     }
   }
 
-  private void drawLineLow(int x0, int y0, int x1, int y1) {
+  public void drawLine(int x0, int y0, int x1, int y1, int color) {
+    if (Math.abs(y1 - y0) < Math.abs(x1 - x0)) {
+      if (x0 > x1) drawLineLow(x1, y1, x0, y0, color);
+      else drawLineLow(x0, y0, x1, y1, color);
+    } else {
+      if (y0 > y1) drawLineHigh(x1, y1, x0, y0, color);
+      else drawLineHigh(x0, y0, x1, y1, color);
+    }
+  }
+
+  private void drawLineLow(int x0, int y0, int x1, int y1, int color) {
     int dx = x1 - x0;
     int dy = y1 - y0;
     int yi = 1;
@@ -178,7 +192,7 @@ public class Renderer {
     int y = y0;
 
     for (int x = x0; x < x1; x++) {
-      setPixel(x, y, 0xffffffff);
+      setPixel(x, y, color);
 
       if (D > 0) {
         y += yi;
@@ -189,7 +203,7 @@ public class Renderer {
     }
   }
 
-  private void drawLineHigh(int x0, int y0, int x1, int y1) {
+  private void drawLineHigh(int x0, int y0, int x1, int y1, int color) {
     int dx = x1 - x0;
     int dy = y1 - y0;
     int xi = 1;
@@ -203,7 +217,7 @@ public class Renderer {
     int x = x0;
 
     for (int y = y0; y < y1; y++) {
-      setPixel(x, y, 0xffffffff);
+      setPixel(x, y, color);
 
       if (D > 0) {
         x += xi;

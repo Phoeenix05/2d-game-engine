@@ -4,3 +4,6 @@
 
 ### Line algorithm
 Bresenham's line algorithm
+
+### Noise Generator by alksily
+#### [https://github.com/alksily]
