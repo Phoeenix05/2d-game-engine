@@ -53,16 +53,23 @@ public class Renderer {
   }
 
   public void drawImage(Image image, int offX, int offY) {
-    if (offX < -image.getW() / 4) return;
-    if (offY < -image.getH() / 4) return;
-    if (offX >= pW) return;
-    if (offY >= pH) return;
+    //Don't render
+    // if (offX < -image.getW() / 4) return;
+    // if (offY < -image.getH() / 4) return;
+    // if (offX >= pW) return;
+    // if (offY >= pH) return;
+
+    if (offX <= -image.getW() / 3) return;
+    if (offY <= -image.getH() / 3) return;
+    if (offX + image.getW() >= pW + image.getW() / 3) return;
+    if (offY + image.getH() >= pH + image.getH() / 3) return;
     
     int newX = 0;
     int newY = 0;
     int newWidth = image.getW();
     int newHeight = image.getH();
 
+    // Clipping code
     if (offX < 0) {newX -= offX;}
     if (offY < 0) {newY -= offY;}
     if (newWidth + offX > pW) {newWidth -= (newWidth + offX - pW);}
@@ -76,16 +83,23 @@ public class Renderer {
   }
 
   public void drawImageTile(ImageTile image, int offX, int offY, int tileX, int tileY) {
-    if (offX < -image.getTileW() / 4) return;
-    if (offY < -image.getTileH() / 4) return;
-    if (offX >= pW) return;
-    if (offY >= pH) return;
+    // Don't render
+    // if (offX < -image.getTileW() / 4) return;
+    // if (offY < -image.getTileH() / 4) return;
+    // if (offX >= pW) return;
+    // if (offY >= pH) return;
+    
+    if (offX <= -image.getTileW() / 3) return;
+    if (offY <= -image.getTileH() / 3) return;
+    if (offX + image.getTileW() >= pW + image.getTileW() / 3) return;
+    if (offY + image.getTileH() >= pH + image.getTileH() / 3) return;
     
     int newX = 0;
     int newY = 0;
     int newWidth = image.getTileW(); 
     int newHeight = image.getTileH();
 
+    // Clipping code
     if (offX < 0) {newX -= offX;}
     if (offY < 0) {newY -= offY;}
     if (newWidth + offX > pW) {newWidth -= (newWidth + offX - pW);}
@@ -111,16 +125,23 @@ public class Renderer {
   }
 
   public void drawFillRect(int offX, int offY, int width, int height, int color) {
-    if (offX < -width / 4) return;
-    if (offY < -height / 4) return;
-    if (offX >= pW) return;
-    if (offY >= pH) return;
+    // Don't render
+    // if (offX < -width / 3) return;
+    // if (offY < -height / 3) return;
+    // if (offX >= pW) return;
+    // if (offY >= pH) return;
     
+    if (offX <= -width / 3) return;
+    if (offY <= -height / 3) return;
+    if (offX + width >= pW + width / 3) return;
+    if (offY + width >= pH + height / 3) return;
+     
     int newX = 0;
     int newY = 0;
     int newWidth = width;
     int newHeight = height;
 
+    // Clipping code
     if (offX < 0) {newX -= offX;}
     if (offY < 0) {newY -= offY;}
     if (newWidth + offX > pW) {newWidth -= (newWidth + offX - pW);}
@@ -129,6 +150,66 @@ public class Renderer {
     for (int y = newY; y <= newHeight; y++) {
       for (int x = newX; x <= newWidth; x++) {
         setPixel(x + offX, y + offY, color);
+      }
+    }
+  }
+
+  public void drawLine(int x0, int y0, int x1, int y1) {
+    if (Math.abs(y1 - y0) < Math.abs(x1 - x0)) {
+      if (x0 > x1) drawLineLow(x1, y1, x0, y0);
+      else drawLineLow(x0, y0, x1, y1);
+    } else {
+      if (y0 > y1) drawLineHigh(x1, y1, x0, y0);
+      else drawLineHigh(x0, y0, x1, y1);
+    }
+  }
+
+  private void drawLineLow(int x0, int y0, int x1, int y1) {
+    int dx = x1 - x0;
+    int dy = y1 - y0;
+    int yi = 1;
+
+    if (dy < 0) {
+      yi = -1;
+      dy = -dy;
+    }
+
+    int D = (2 * dy) - dx;
+    int y = y0;
+
+    for (int x = x0; x < x1; x++) {
+      setPixel(x, y, 0xffffffff);
+
+      if (D > 0) {
+        y += yi;
+        D += 2 * (dy - dx);
+      } else {
+        D += 2 * dy;
+      }
+    }
+  }
+
+  private void drawLineHigh(int x0, int y0, int x1, int y1) {
+    int dx = x1 - x0;
+    int dy = y1 - y0;
+    int xi = 1;
+
+    if (dx < 0) {
+      xi = -1;
+      dx = -dx;
+    }
+
+    int D = (2 * dx) - dy;
+    int x = x0;
+
+    for (int y = y0; y < y1; y++) {
+      setPixel(x, y, 0xffffffff);
+
+      if (D > 0) {
+        x += xi;
+        D += 2 * (dx - dy);
+      } else {
+        D += 2 * dx;
       }
     }
   }

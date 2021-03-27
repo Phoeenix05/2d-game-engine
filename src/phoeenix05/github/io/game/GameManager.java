@@ -11,8 +11,10 @@ import phoeenix05.github.io.gfx.ImageTile;
 
 public class GameManager extends AbstractGame {
 
+  private Image arrow;
+
   public GameManager() {
-    
+    arrow = new Image("/res/textures/arrow.png");
   }
 
   @Override
@@ -28,7 +30,16 @@ public class GameManager extends AbstractGame {
 
   @Override
   public void render(GameContainer gc, Renderer r) {
-    r.drawFillRect(gc.getInput().getMouseX() - 16, gc.getInput().getMouseY() - 16, 32, 32, 0xffffccff);
+    // r.drawFillRect(gc.getInput().getMouseX() - 16, gc.getInput().getMouseY() - 16, 32, 32, 0xffffccff);
+    // r.drawImage(
+    //   arrow, 
+    //   gc.getInput().getMouseX() - arrow.getW() / 2, 
+    //   gc.getInput().getMouseY() - arrow.getH() / 2
+    // );
+    r.drawLine(
+      gc.getWidht() / 2, gc.getHeight() / 2, 
+      gc.getInput().getMouseX(), gc.getInput().getMouseY()
+    );
   }
 
   public static void main(String[] args) {
