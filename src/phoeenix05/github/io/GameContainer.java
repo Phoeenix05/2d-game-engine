@@ -16,7 +16,7 @@ public class GameContainer implements Runnable {
   // That value is game's max frames per second
   private final double UPDATE_CAP = 1.0 / 60.0;
   // Window variables
-  private int widht = 320, height = 240;
+  private int width = 320, height = 240;
   private float scale = 3f;
   private String title = "2D Engine";
 
@@ -98,12 +98,12 @@ public class GameContainer implements Runnable {
 
   }
 
-  public int getWidht() {
-    return widht;
+  public int getwidth() {
+    return width;
   }
 
-  public void setWidht(int widht) {
-    this.widht = widht;
+  public void setwidth(int width) {
+    this.width = width;
   }
 
   public int getHeight() {

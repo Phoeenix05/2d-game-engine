@@ -14,7 +14,7 @@ public class Renderer {
   private Font font = Font.STANDARD;
 
   public Renderer(GameContainer gc) {
-    pW = gc.getWidht();
+    pW = gc.getwidth();
     pH = gc.getHeight();
     p = ((DataBufferInt)gc.getWindow().getImage().getRaster().getDataBuffer()).getData();
   }
@@ -32,6 +32,16 @@ public class Renderer {
 
     p[x + y * pW] = value; 
   }
+
+  public boolean getPixel(int x, int y) {
+    // If there is not pixel at given position
+    if (p[x + y * pW] == 0) return false;
+
+    // If there is pixel at given position
+    return true;
+  }
+
+
 
   public void drawText(String text, int offX, int offY, int color) {  
     text = text.toUpperCase();
@@ -51,6 +61,8 @@ public class Renderer {
       offset += font.getWidths()[unicode];
     }
   }
+
+
 
   public void drawImage(Image image, int offX, int offY) {
     //Don't render
@@ -112,6 +124,8 @@ public class Renderer {
     }
   }
 
+
+
   public void drawRect(int offX, int offY, int width, int height, int color) {
     for (int y = 0; y <= height; y++) {
       setPixel(offX, y + offY, color);
@@ -154,6 +168,8 @@ public class Renderer {
     }
   }
 
+
+
   public void drawCircle(int offX, int offY, int r, int color) {
     double angle, x1, y1;
 
@@ -167,6 +183,8 @@ public class Renderer {
       setPixel(ElX, ElY, color);
     }
   }
+
+
 
   public void drawLine(int x0, int y0, int x1, int y1, int color) {
     if (Math.abs(y1 - y0) < Math.abs(x1 - x0)) {
