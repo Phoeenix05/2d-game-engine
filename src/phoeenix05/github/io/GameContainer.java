@@ -12,9 +12,10 @@ public class GameContainer implements Runnable {
   private AbstractGame game;
 
   private boolean running = false;
+  private double FPS = 60.0;
   // Change 60.0 to any double 
   // That value is game's max frames per second
-  private final double UPDATE_CAP = 1.0 / 60.0;
+  private final double UPDATE_CAP = 1.0 / FPS;
   // Window variables
   private int width = 320, height = 240;
   private float scale = 3f;
@@ -79,6 +80,7 @@ public class GameContainer implements Runnable {
       if (render) {
         renderer.clear();
         game.render(this, renderer);
+        renderer.process();
         renderer.drawText("FPS: " + fps, 0, 0, 0xff00ffff);
         window.update();
         frames++;

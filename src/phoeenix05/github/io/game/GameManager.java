@@ -15,9 +15,13 @@ public class GameManager extends AbstractGame {
     
   }
 
+  public void reset() {
+    
+  }
+
   @Override
   public void update(GameContainer gc, float dt) {
-  
+    
   }
 
   @Override
